@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Clash Manager PRO</title>
 
 <style>
@@ -9,48 +10,49 @@ body {
   font-family: Arial;
   background:#0f172a;
   color:white;
-  padding:20px;
+  padding:10px;
+  margin:0;
+}
+
+h1 {
+  font-size:20px;
+  margin-bottom:10px;
 }
 
 .topo {
   display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-bottom:20px;
+  flex-direction:column;
+  gap:8px;
+  margin-bottom:15px;
 }
 
-h1 {
+.topo button, .topo select {
   width:100%;
 }
 
 select, button {
-  padding:10px;
-  border-radius:6px;
+  padding:12px;
+  border-radius:8px;
   border:none;
   font-weight:bold;
+  font-size:14px;
 }
 
 button {
   background:#2563eb;
   color:white;
-  cursor:pointer;
-}
-
-button:hover {
-  background:#1d4ed8;
 }
 
 #contador {
-  margin:15px 0;
-  font-size:18px;
-  font-weight:bold;
+  font-size:14px;
+  margin:10px 0;
 }
 
 .barra-container {
   background:#334155;
   border-radius:10px;
-  height:20px;
-  margin-bottom:20px;
+  height:15px;
+  margin-bottom:15px;
 }
 
 #barra {
@@ -63,10 +65,26 @@ button:hover {
 .item {
   background:#1e293b;
   padding:12px;
-  border-radius:10px;
-  display:flex;
-  justify-content:space-between;
+  border-radius:12px;
   margin-bottom:10px;
+}
+
+.item-top {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.item-buttons {
+  display:flex;
+  gap:5px;
+  margin-top:10px;
+}
+
+.item-buttons button {
+  flex:1;
+  padding:12px;
+  font-size:16px;
 }
 
 .nivel {
