@@ -9,7 +9,8 @@ function getIcone(tipo){
     defesa: "🛡️",
     heroi: "👑",
     armadilha: "💣",
-    lab: "🧪"
+    lab: "🧪",
+    muro: "🧱"
   };
   return icones[tipo] || "🏗️";
 }
@@ -30,6 +31,7 @@ function resetar(){
 }
 
 function gerar(){
+
   itens = [];
 
   const adicionar = (lista, tipo)=>{
@@ -63,6 +65,19 @@ function gerar(){
   adicionar(DB[base].armadilhas, "armadilha");
   adicionar(DB[base].laboratorio, "lab");
 
+  // 🔥 MUROS AGRUPADOS
+  const muros = DB[base].muros;
+
+  itens.push({
+    id: "muro_unico",
+    nome: "Muro",
+    tipo: "muro",
+    niveis: {
+      1: muros.qtd
+    },
+    max: muros.max
+  });
+
   salvar();
   render();
 }
@@ -95,6 +110,41 @@ function descer(id){
   render();
 }
 
+// 🔥 UPAR MURO
+function uparMuro(nivel){
+  const muro = itens.find(i => i.tipo === "muro");
+  if(!muro) return;
+
+  if(!muro.niveis[nivel] || muro.niveis[nivel] <= 0) return;
+  if(nivel >= muro.max) return;
+
+  muro.niveis[nivel]--;
+
+  const prox = nivel + 1;
+  muro.niveis[prox] = (muro.niveis[prox] || 0) + 1;
+
+  salvar();
+  render();
+}
+function descerMuro(nivel){
+  const muro = itens.find(i => i.tipo === "muro");
+  if(!muro) return;
+
+  if(!muro.niveis[nivel] || muro.niveis[nivel] <= 0) return;
+
+  if(nivel <= 1) return; // não pode descer abaixo do nível 1
+
+  // remove 1 do nível atual
+  muro.niveis[nivel]--;
+
+  // adiciona no nível anterior
+  const anterior = nivel - 1;
+  muro.niveis[anterior] = (muro.niveis[anterior] || 0) + 1;
+
+  salvar();
+  render();
+}
+
 function salvar(){
   localStorage.setItem("clash", JSON.stringify({itens, cv}));
 }
@@ -117,11 +167,14 @@ function render(){
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
+  const termo = document.getElementById("pesquisa")?.value.toLowerCase() || "";
+
   const categorias = {
     defesa: [],
     heroi: [],
     armadilha: [],
-    lab: []
+    lab: [],
+    muro: []
   };
 
   itens.forEach(i=>{
@@ -132,7 +185,8 @@ function render(){
     defesa:"🛡 Defesas",
     heroi:"👑 Heróis",
     armadilha:"💣 Armadilhas",
-    lab:"🧪 Laboratório"
+    lab:"🧪 Laboratório",
+    muro:"🧱 Muros"
   };
 
   Object.keys(categorias).forEach(tipo=>{
@@ -142,6 +196,44 @@ function render(){
     lista.innerHTML += `<h3>${nomes[tipo]}</h3>`;
 
     categorias[tipo].forEach(i=>{
+
+      // 🔥 MURO ESPECIAL
+      if(i.tipo === "muro"){
+
+        Object.keys(i.niveis).sort((a,b)=>a-b).forEach(nivel=>{
+          const qtd = i.niveis[nivel];
+          const nivelNum = Number(nivel);
+
+          if(qtd <= 0) return;
+
+          lista.innerHTML += `
+            <div class="item">
+              <div class="item-top">
+                <div style="font-size:22px;">🧱</div>
+                <div>
+                  <strong>Muro</strong>
+                  <div><span class="nivel">${nivelNum}</span> (${qtd}x)</div>
+                </div>
+              </div>
+
+              <div class="item-buttons">
+  <button onclick="descerMuro(${nivelNum})">
+    ⬇
+  </button>
+
+  <button onclick="uparMuro(${nivelNum})">
+    ⬆
+  </button>
+</div>
+            </div>
+          `;
+        });
+
+        return;
+      }
+
+      // 🔍 PESQUISA
+      if(termo && !i.nome.toLowerCase().includes(termo)) return;
 
       const max = getMax(i);
       const isMax = i.nivel >= max;
