@@ -10,7 +10,8 @@ function getIcone(tipo){
     heroi: "👑",
     armadilha: "💣",
     lab: "🧪",
-    muro: "🧱"
+    muro: "🧱",
+    recurso: "💰"
   };
   return icones[tipo] || "🏗️";
 }
@@ -64,6 +65,7 @@ function gerar(){
   adicionar(DB[base].herois, "heroi");
   adicionar(DB[base].armadilhas, "armadilha");
   adicionar(DB[base].laboratorio, "lab");
+  adicionar(DB[base].recursos, "recurso");
 
   // 🔥 MUROS AGRUPADOS
   const muros = DB[base].muros;
@@ -181,6 +183,7 @@ function render(){
     heroi: [],
     armadilha: [],
     lab: [],
+    recurso: [],
     muro: []
   };
 
@@ -193,6 +196,7 @@ function render(){
     heroi:"👑 Heróis",
     armadilha:"💣 Armadilhas",
     lab:"🧪 Laboratório",
+    recurso:"💰 Recursos",
     muro:"🧱 Muros"
   };
 
