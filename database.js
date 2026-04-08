@@ -34,6 +34,16 @@ laboratorio: [
   { nome:"Feitiço de Gelo", maxPorCV:{13:6}},
   { nome:"Feitiço de Veneno", maxPorCV:{13:7}}
 ],
+
+recursos: [
+  { nome:"Coletor de Ouro", qtd:7, maxPorCV:{13:15}},
+  { nome:"Coletor de Elixir", qtd:7, maxPorCV:{13:15}},
+  { nome:"Broca de Elixir Negro", qtd:3, maxPorCV:{13:9}},
+  { nome:"Depósito de Ouro", qtd:4, maxPorCV:{13:15}},
+  { nome:"Depósito de Elixir", qtd:4, maxPorCV:{13:15}},
+  { nome:"Depósito de Elixir Negro", qtd:1, maxPorCV:{13:9}}
+],
+
 muros: { max:13, qtd:300 }
 
 }
