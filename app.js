@@ -3,7 +3,6 @@ let cv = 13;
 let filtro = false;
 
 let itens = [];
-let muros = [];
 
 function getIcone(tipo){
   const icones = {
@@ -12,7 +11,6 @@ function getIcone(tipo){
     armadilha: "💣",
     lab: "🧪"
   };
-
   return icones[tipo] || "🏗️";
 }
 
@@ -72,7 +70,6 @@ function gerar(){
 function togglePrioridade(id){
   const i = itens.find(x=>x.id===id);
   if(!i) return;
-
   i.prioridade = !i.prioridade;
   salvar();
   render();
@@ -85,7 +82,6 @@ function getMax(i){
 function upar(id){
   const i = itens.find(x=>x.id===id);
   if(!i) return;
-
   if(i.nivel < getMax(i)) i.nivel++;
   salvar();
   render();
@@ -94,7 +90,6 @@ function upar(id){
 function descer(id){
   const i = itens.find(x=>x.id===id);
   if(!i) return;
-
   if(i.nivel > 1) i.nivel--;
   salvar();
   render();
@@ -107,7 +102,6 @@ function salvar(){
 function carregar(){
   const d = JSON.parse(localStorage.getItem("clash"));
   if(!d) return;
-
   itens = d.itens || [];
   cv = d.cv || 13;
 }
@@ -167,10 +161,11 @@ function render(){
       lista.innerHTML += `
         <div class="item">
 
-          <div style="display:flex; gap:10px; align-items:center;">
-            <div style="font-size:24px;">
+          <div class="item-top">
+            <div style="font-size:22px;">
               ${getIcone(i.tipo)}
             </div>
+
             <div>
               <strong>${i.nome}</strong>
               <div><span class="nivel">${i.nivel}</span> / ${max}</div>
@@ -180,35 +175,25 @@ function render(){
             </div>
           </div>
 
-          <div style="display:flex; gap:5px;">
-            <button class="btn-prioridade" data-id="${i.id}">
+          <div class="item-buttons">
+
+            <button onclick="togglePrioridade('${i.id}')">
               ${i.prioridade ? "⭐" : "☆"}
             </button>
 
-            <button class="btn-descer" data-id="${i.id}">
+            <button onclick="descer('${i.id}')">
               ⬇
             </button>
 
-            <button class="btn-upar" data-id="${i.id}">
+            <button onclick="upar('${i.id}')" ${isMax ? "disabled" : ""}>
               ${isMax ? "MAX" : "⬆"}
             </button>
+
           </div>
 
         </div>
       `;
     });
-  });
-
-  document.querySelectorAll(".btn-upar").forEach(btn=>{
-    btn.onclick = () => upar(btn.dataset.id);
-  });
-
-  document.querySelectorAll(".btn-descer").forEach(btn=>{
-    btn.onclick = () => descer(btn.dataset.id);
-  });
-
-  document.querySelectorAll(".btn-prioridade").forEach(btn=>{
-    btn.onclick = () => togglePrioridade(btn.dataset.id);
   });
 
   const progresso = total ? Math.floor((atual / total) * 100) : 0;
