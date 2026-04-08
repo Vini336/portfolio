@@ -111,17 +111,24 @@ function descer(id){
 }
 
 // 🔥 UPAR MURO
-function uparMuro(nivel){
+function uparMuro(nivel, quantidade = 1){
   const muro = itens.find(i => i.tipo === "muro");
   if(!muro) return;
 
   if(!muro.niveis[nivel] || muro.niveis[nivel] <= 0) return;
   if(nivel >= muro.max) return;
 
-  muro.niveis[nivel]--;
+  const disponivel = muro.niveis[nivel];
 
+  // limita pra não passar do que existe
+  const qtdReal = Math.min(quantidade, disponivel);
+
+  // remove do nível atual
+  muro.niveis[nivel] -= qtdReal;
+
+  // adiciona no próximo nível
   const prox = nivel + 1;
-  muro.niveis[prox] = (muro.niveis[prox] || 0) + 1;
+  muro.niveis[prox] = (muro.niveis[prox] || 0) + qtdReal;
 
   salvar();
   render();
@@ -217,13 +224,12 @@ function render(){
               </div>
 
               <div class="item-buttons">
-  <button onclick="descerMuro(${nivelNum})">
-    ⬇
-  </button>
+  <button onclick="descerMuro(${nivelNum})">⬇</button>
 
-  <button onclick="uparMuro(${nivelNum})">
-    ⬆
-  </button>
+  <button onclick="uparMuro(${nivelNum}, 1)">+1</button>
+  <button onclick="uparMuro(${nivelNum}, 10)">+10</button>
+  <button onclick="uparMuro(${nivelNum}, 50)">+50</button>
+  <button onclick="uparMuro(${nivelNum}, 9999)">MAX</button>
 </div>
             </div>
           `;
